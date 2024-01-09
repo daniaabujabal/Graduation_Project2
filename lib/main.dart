@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Pages/Home_Page.dart';
-import 'Pages/Search_Page.dart';
-import 'Pages/Categories_Page.dart';
 import 'Pages/Navigation.dart';
 
 void main()  {
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

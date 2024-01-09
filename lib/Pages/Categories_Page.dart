@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 // import 'search_page.dart';
 
 class CategoriesPage extends StatefulWidget {
+  const CategoriesPage({super.key});
+
   @override
   _CategoriesPageState createState() => _CategoriesPageState();
 }
@@ -17,7 +19,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle categoryTextStyle = TextStyle(
+    TextStyle categoryTextStyle = const TextStyle(
       color: Colors.grey,
       fontWeight: FontWeight.bold,
       fontSize: 14,
@@ -26,7 +28,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -40,8 +42,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 'Categories',
                 style: TextStyle(
@@ -58,14 +60,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 controller: searchController,
                 decoration: InputDecoration(
                   hintText: "Search a product",
-                  hintStyle: TextStyle(color: Colors.black45),
+                  hintStyle: const TextStyle(color: Colors.black45),
                   filled: true,
-                  fillColor: Color.fromARGB(255, 222, 224, 232),
+                  fillColor: const Color.fromARGB(255, 222, 224, 232),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(27.0),
                   ),
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                 ),
                 onFieldSubmitted: (value) {
                 },
@@ -73,17 +75,17 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(top: 16),
-                padding: EdgeInsets.all(16),
+                margin: const EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white54.withOpacity(0.7),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
                 ),
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     childAspectRatio: 1,
                     crossAxisSpacing: 10,
@@ -96,18 +98,18 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color:  Color.fromARGB(255, 222, 224, 232),
+                          color:  const Color.fromARGB(255, 222, 224, 232),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.category,
                               size: 40,
                               color: Colors.black45,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Text(
                               categoryNames[index],
                               style: categoryTextStyle,

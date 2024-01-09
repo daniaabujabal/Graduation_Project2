@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
-import 'Categories_Page.dart';
 import 'Search_Page.dart';
 
 class HomePage extends StatefulWidget {
@@ -93,7 +92,7 @@ class _HomePageState extends State<HomePage> {
 
                 decoration: InputDecoration(
                   hintText: "Search a product or a pharmacy",
-                  hintStyle: TextStyle(color: Colors.black45),
+                  hintStyle: const TextStyle(color: Colors.black45),
                   filled: true,
                   fillColor: const Color.fromARGB(255, 222, 224, 232),
                   border: OutlineInputBorder(
@@ -120,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: Colors.white54.withOpacity(0.5),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(70.0),
                     topRight: Radius.circular(70.0),
                   ),
@@ -181,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Text(
+                                  child: const Text(
                                     'Panadol',
                                     style: TextStyle(
                                       fontSize: 24,
@@ -219,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
 
-                    Container(
+                    SizedBox(
                       height: 120,
 
                       child: ListView.builder(
@@ -240,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
                                     blurRadius: 6,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
@@ -255,14 +254,14 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.cyan[100], // Icon background color
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.local_pharmacy,
                                         color: Color(0xFF4CA6C2), // Icon color
                                         size: 30, // Icon size
                                       ),
                                     ),
                                   ),
-                                  Expanded(
+                                  const Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                                       child: Column(
@@ -325,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -345,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
                                     blurRadius: 6,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
@@ -360,14 +359,14 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.cyan[100], // Icon background color
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.local_pharmacy,
                                         color: Color(0xFF4CA6C2),
                                         size: 30, // Icon size
                                       ),
                                     ),
                                   ),
-                                  Expanded(
+                                  const Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 16.0),
                                       child: Column(

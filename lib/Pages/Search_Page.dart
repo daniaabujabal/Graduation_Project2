@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
-import 'Setting_Page.dart';
 
-import 'Categories_Page.dart';
 
 
 class SearchPage extends StatefulWidget {
@@ -112,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
           child: TextFormField(
             decoration: InputDecoration(
               hintText: "Search a product or a pharmacy",
-              hintStyle: TextStyle(color: Colors.black45),
+              hintStyle: const TextStyle(color: Colors.black45),
               filled: true,
               fillColor: const Color.fromARGB(255, 222, 224, 232),
               border: OutlineInputBorder(
@@ -129,7 +127,7 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.only(top: 20),
     decoration: BoxDecoration(
     color: Colors.white54.withOpacity(0.5),
-    borderRadius: BorderRadius.only(
+    borderRadius: const BorderRadius.only(
     topLeft: Radius.circular(70.0),
     topRight: Radius.circular(70.0),
     ),
@@ -151,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
     child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      Icon(Icons.medication, size: 40,color: Color(0xFF4CA6C2)),
+      const Icon(Icons.medication, size: 40,color: Color(0xFF4CA6C2)),
 
       Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +157,7 @@ class _SearchPageState extends State<SearchPage> {
 
       Text(
     product['name'],
-    style: TextStyle(
+    style: const TextStyle(
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
       color: Color(0xFF4CA6C2),
@@ -182,13 +180,13 @@ class _SearchPageState extends State<SearchPage> {
     ),
     ],
     ),
-    Text(product['pharmacyName'], style: TextStyle(color: Color(0xFF4CA6C2),
+    Text(product['pharmacyName'], style: const TextStyle(color: Color(0xFF4CA6C2),
     )),
-    Text(product['address'], style: TextStyle(color: Color(0xFF4CA6C2),
+    Text(product['address'], style: const TextStyle(color: Color(0xFF4CA6C2),
     )),
-    Text('Rating: ${product['rating']}', style:TextStyle(color: Color(0xFF4CA6C2),
+    Text('Rating: ${product['rating']}', style:const TextStyle(color: Color(0xFF4CA6C2),
     )),
-    Text('Price: ${product['price']}', style: TextStyle(color: Color(0xFF4CA6C2),
+    Text('Price: ${product['price']}', style: const TextStyle(color: Color(0xFF4CA6C2),
     )),
     ],
     ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Home_Page.dart';
 import 'Categories_Page.dart';
-import 'Search_Page.dart';
 import 'Setting_Page.dart';
 class  MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});
@@ -14,10 +13,10 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    CategoriesPage(),
+    const HomePage(),
+    const CategoriesPage(),
     //SearchPage(searchQuery: ""),
-    SettingsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -36,7 +35,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       elevation: 0,
       child: Container(
         height: kToolbarHeight,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFF71CDD7),
         ),
         child: Row(
