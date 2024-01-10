@@ -95,7 +95,7 @@ class SettingsPage extends StatelessWidget {
                     settingSwitchOption(
                         context,
                         'Language',
-                        Icons.language, // Language icon
+                        Icons.language, 
                         switchColor,
                         optionStyle
                     ),
@@ -103,7 +103,7 @@ class SettingsPage extends StatelessWidget {
                     settingSwitchOption(
                         context,
                         'App mode',
-                        Icons.brightness_4, // App mode icon
+                        Icons.brightness_4, 
                         switchColor,
                         optionStyle
                     ),                  ],

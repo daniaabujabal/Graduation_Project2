@@ -1,8 +1,26 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
 import 'Categories_Page.dart';
 import 'Search_Page.dart';
+import 'package:graduation_project2/services/models/Product.dart';
+import 'package:graduation_project2/services/models/Pharmacy.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+
+
+
+import 'package:graduation_project2/Pages/search.dart';
+import 'package:graduation_project2/Pages/wishlist_Page.dart';
+import 'package:graduation_project2/Pages/pharmacy_Info.dart';
+
+import 'package:graduation_project2/services/models/User.dart';
+import 'package:graduation_project2/services/models/User_Product.dart';
+
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,19 +28,31 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+//wishlist_Api apiService = wishlist_Api();
+
 
 class _HomePageState extends State<HomePage> {
   final double cardBorderRadius = 25.0;
   TextEditingController searchController = TextEditingController();
+List<dynamic> allPharmacies = [];
+  List<dynamic> highlyRatedPharmacies = [];
 
-  void _navigateToSearchPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SearchPage(searchQuery: searchController.text),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    loadJson();
   }
+
+  Future<void> loadJson() async {
+  String jsonString = await rootBundle.loadString('assets/sample_data.json');
+  final jsonResponse = json.decode(jsonString);
+  setState(() {
+    allPharmacies = jsonResponse['pharmacies'] as List;
+    highlyRatedPharmacies = allPharmacies.where((pharmacy) => pharmacy['rating'] >= 4.0).toList();
+  });
+  print(highlyRatedPharmacies); 
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       "Good Afternoon, Dania",
                       style: TextStyle(
@@ -78,8 +108,12 @@ class _HomePageState extends State<HomePage> {
                           width: 24,
                           height: 24,
                         ),
-                        onPressed: () {
-                        },
+                        onPressed:() {
+                           Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => WishlistPage(searchQuery: "value")), 
+        );
+                        }
                       ),
                     ),
                   ),
@@ -102,16 +136,19 @@ class _HomePageState extends State<HomePage> {
                   ),
                   prefixIcon: const Icon(Icons.search),
                 ),
-                //onFieldSubmitted: (_) => _navigateToSearchPage(),
+             // onFieldSubmitted: (value) => _navigateToSearchPage(value),
+                onTap:(){
+                    showSearch(context: context, delegate: DataSearch());
+                  }
 
-                onFieldSubmitted: (value) {
+               /* onFieldSubmitted: (value) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SearchPage(searchQuery: value),
                     ),
                   );
-                },
+                },*/
               ),
             ),
             const SizedBox(height: 15),
@@ -133,10 +170,18 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: GestureDetector(
+                         onTap:(){
+                           showSearch(
+                             context: context,
+                             delegate: DataSearch(initialQuery: 'Panadol'), // Panadol as the initial query
+                           );
+                             },
                             child: Stack(
                               alignment: Alignment.bottomCenter,
                               children: [
                                 ClipRRect(
+
                                   borderRadius: BorderRadius.circular(cardBorderRadius),
                                   child: Image.asset(ImageConstant.imgRectangle4, fit: BoxFit.cover),
                                 ),
@@ -162,8 +207,16 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: GestureDetector(
+                              onTap:(){
+                               showSearch(
+                                  context: context,
+                                  delegate: DataSearch(initialQuery: 'Panadol'),
+                                );
+                              },
                             child: Stack(
                               alignment: Alignment.bottomCenter,
                               children: [
@@ -192,6 +245,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ),
+                          ),
+
                           ),
 
                         ],
@@ -227,8 +282,11 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 10,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () {
-                              print('Pharmacy clicked');
+                            onTap: ()
+                            {
+
+
+
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.93,
@@ -329,11 +387,18 @@ class _HomePageState extends State<HomePage> {
                       height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 10, // Number of items in the list
+                       itemCount: highlyRatedPharmacies.length, 
                         itemBuilder: (context, index) {
+                        Map<String, dynamic> pharmacyMap = highlyRatedPharmacies[index];
+    Pharmacy pharmacy = Pharmacy.fromJson(pharmacyMap);
                           return InkWell(
                             onTap: () {
-                              print('Pharmacy clicked');
+                             Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy), 
+          ),);
+                            
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.93,
@@ -352,18 +417,18 @@ class _HomePageState extends State<HomePage> {
                               child: Row(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(10), // Space around the icon
+                                    padding: const EdgeInsets.all(10),
                                     child: Container(
                                       width: 50,
                                       height: 50,
                                       decoration: BoxDecoration(
-                                        color: Colors.cyan[100], // Icon background color
+                                        color: Colors.cyan[100], 
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Icon(
                                         Icons.local_pharmacy,
                                         color: Color(0xFF4CA6C2),
-                                        size: 30, // Icon size
+                                        size: 30, 
                                       ),
                                     ),
                                   ),
@@ -375,24 +440,20 @@ class _HomePageState extends State<HomePage> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Pharmacy One',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: Color(0xFF71CDD7),
-                                            ),
+                          pharmacy.name, 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Color(0xFF71CDD7),
+                          ),
                                           ),
-                                          Text(
-                                            '8:00 am - 11:00 pm',
-                                            style: TextStyle(
-                                              color: Color(0xFF71CDD7),
-                                            ),
-                                          ),
-                                          Text(
-                                            'pharmacy info pharmacy info',
-                                            style: TextStyle(
-                                              color: Color(0xFF71CDD7),
-                                            ),
+                      SizedBox(height: 10),
+          _buildRatingRow(pharmacy.rating),
+                                           Text(
+                          pharmacy.description, 
+                          style: TextStyle(
+                            color: Color(0xFF71CDD7),
+                          ),
                                           ),
                                         ],
                                       ),
@@ -416,5 +477,26 @@ class _HomePageState extends State<HomePage> {
       ),
 
     );
+  }
+
+Widget _buildRatingRow(double rating) {
+    int fullStars = rating.floor();
+    bool hasHalfStar = rating - fullStars >= 0.5;
+    int maxStars = 5;
+
+    return Row(
+  children: List<Widget>.generate(maxStars, (index) {
+    Icon icon;
+    if (index < fullStars) {
+      icon = Icon(Icons.star, color: Color(0xFF55AFBC));
+    } else if (hasHalfStar && index == fullStars) {
+      icon = Icon(Icons.star_half, color: Color(0xFF55AFBC));
+      hasHalfStar = false; 
+    } else {
+      icon = Icon(Icons.star_border, color: Color(0xFF55AFBC));
+    }
+    return icon;
+  }),
+);
   }
 }

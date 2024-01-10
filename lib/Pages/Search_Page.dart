@@ -3,11 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
 import 'Setting_Page.dart';
 
-import 'Categories_Page.dart';
-
-
 class SearchPage extends StatefulWidget {
   final String searchQuery;
+
   const SearchPage({Key? key, required this.searchQuery}) : super(key: key);
 
   @override
@@ -15,229 +13,177 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController searchController = TextEditingController();
-  List<Map<String, dynamic>> products = [];
+  List<Map<String, dynamic>> products = [
+    {
+      'name': 'Panadol',
+      'pharmacyName': 'Pharmacy 1',
+      'address': 'city street, building 1',
+      'rating': 3.15,
+      'phoneNumber': '+962 800 000 000',
+      'price': '3 JD',
+      'isFavorite': false,
+    },
 
-  @override
-  void initState() {
-    super.initState();
-    searchController.text = widget.searchQuery;
-    fetchProducts();
-  }
 
-  void fetchProducts() async {
-    // Firestore fetching logic goes here
-    // For example:
-    /*
-    FirebaseFirestore.instance
-      .collection('products')
-      .where('name', isEqualTo: widget.searchQuery)
-      .get()
-      .then((QuerySnapshot querySnapshot) {
-        List<Map<String, dynamic>> fetchedProducts = [];
-        for (var doc in querySnapshot.docs) {
-          fetchedProducts.add(doc.data() as Map<String, dynamic>);
-        }
-        setState(() {
-          products = fetchedProducts;
-        });
-      });
-    */
-  }
+
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF4BD8BB),
-                  Color(0xFF55AFBC),
-                  Color(0xFF5DAFCA),
+
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF4BD8BB),
+              Color(0xFF55AFBC),
+              Color(0xFF5DAFCA),
+            ],
+            stops: [0.1, 0.25, 0.9],
+          ),
+        ),
+        child: Column(
+          children: [
+        SafeArea(
+        child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0, bottom: 10.0),
+        child: Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            Expanded(
+              child: Text(
+                "Good Afternoon, Dania",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(255, 222, 224, 232),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(0, 4),
+                    blurRadius: 8,
+                  ),
                 ],
-                stops: [0.1, 0.25, 0.9],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(2),
+                child: IconButton(
+                  icon: SvgPicture.asset(
+                    ImageConstant.imgIconHeart,
+                    width: 24,
+                    height: 24,
+                  ),
+                  onPressed: () {},
+                ),
               ),
             ),
-            child: Column(
-                children: [
-            SizedBox(height: MediaQuery.of(context).padding.top),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Row(
-            children: [
-              const Expanded(
-                child: Text(
-                  "Good Afternoon, Dania",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(255, 222, 224, 232),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(0, 4),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: IconButton(
-                    icon: SvgPicture.asset(
-                      ImageConstant.imgIconHeart,
-                      width: 24,
-                      height: 24,
-                    ),
-                    onPressed: () {
-
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: TextFormField(
-            decoration: InputDecoration(
-              hintText: "Search a product or a pharmacy",
-              hintStyle: TextStyle(color: Colors.black45),
-              filled: true,
-              fillColor: const Color.fromARGB(255, 222, 224, 232),
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(27.0),
+      ),
+    ),
+
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Search a product or a pharmacy",
+                  hintStyle: TextStyle(color: Colors.black45),
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 222, 224, 232),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(27.0),
+                  ),
+                  prefixIcon: const Icon(Icons.search),
+                ),
               ),
-              prefixIcon: const Icon(Icons.search),
             ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        Expanded(
-        child: Container(
-        padding: const EdgeInsets.only(top: 20),
-    decoration: BoxDecoration(
-    color: Colors.white54.withOpacity(0.5),
-    borderRadius: BorderRadius.only(
-    topLeft: Radius.circular(70.0),
-    topRight: Radius.circular(70.0),
-    ),
-    ),
-
-    child: ListView.builder(
-    itemCount: products.length,
-    itemBuilder: (context, index) {
-    final product = products[index];
-    return Card(
-    elevation: 4.0,
-    margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), color: Colors.white.withOpacity(0.6), // Adjust opacity as needed
-
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15.0),
-    ),
-    child: Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Icon(Icons.medication, size: 40,color: Color(0xFF4CA6C2)),
-
-      Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-
-      Text(
-    product['name'],
-    style: TextStyle(
-    fontSize: 20.0,
-    fontWeight: FontWeight.bold,
-      color: Color(0xFF4CA6C2),
-    ),
-    ),
-    IconButton(
-    icon: SvgPicture.asset(
-    product['isFavorite']
-    ? ImageConstant.imgIconHeartTeal30004
-        : ImageConstant.imgIconHeart,
-
-    width: 24.0,
-    height: 24.0,
-    ),
-    onPressed: () {
-    setState(() {
-    product['isFavorite'] = !product['isFavorite'];
-    });
-    },
-    ),
-    ],
-    ),
-    Text(product['pharmacyName'], style: TextStyle(color: Color(0xFF4CA6C2),
-    )),
-    Text(product['address'], style: TextStyle(color: Color(0xFF4CA6C2),
-    )),
-    Text('Rating: ${product['rating']}', style:TextStyle(color: Color(0xFF4CA6C2),
-    )),
-    Text('Price: ${product['price']}', style: TextStyle(color: Color(0xFF4CA6C2),
-    )),
-    ],
-    ),
-    ),
-    );
-    },
-    ),
-
-
-                    ),
+            const SizedBox(height: 15),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(top: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white54.withOpacity(0.5),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(70.0),
+                    topRight: Radius.circular(70.0),
                   ),
-
-
-
-
-    ],
-    ),
-    ),
-     /* bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        elevation: 0,
-        child: Container(
-          height: kToolbarHeight,
-          decoration: BoxDecoration(
-            color: Color(0xFF5DAFCA),
-            //   borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              // Home Button
-              IconButton(
-                icon: Icon(Icons.home, color: _selectedIndex == 0 ? Colors.white : Colors.white60),
-                onPressed: () => _onItemTapped(0),
+                ),
+                child: ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return Card(
+                      elevation: 4.0,
+                      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(Icons.medication, size: 40, color: Color(0xFF4CA6C2)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  product['name'] ?? 'N/A',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF4CA6C2),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: SvgPicture.asset(
+                                    product['isFavorite'] ?? false
+                                        ? ImageConstant.imgIconHeartTeal30004
+                                        : ImageConstant.imgIconHeart,
+                                    width: 24.0,
+                                    height: 24.0,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      product['isFavorite'] = !(product['isFavorite'] ?? false);
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            Text(product['pharmacyName'] ?? 'N/A', style: TextStyle(color: Color(0xFF4CA6C2))),
+                            Text(product['address'] ?? 'N/A', style: TextStyle(color: Color(0xFF4CA6C2))),
+                            Text('Rating: ${product['rating'] ?? 'N/A'}', style: TextStyle(color: Color(0xFF4CA6C2))),
+                            Text('Price: ${product['price'] ?? 'N/A'}', style: TextStyle(color: Color(0xFF4CA6C2))),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
-              // Categories Button
-              IconButton(
-                icon: Icon(Icons.apps, color: _selectedIndex == 1 ? Colors.white : Colors.white60),
-                onPressed: () => _onItemTapped(1),
-              ),
-              // Settings Button
-              IconButton(
-                icon: Icon(Icons.settings, color: _selectedIndex == 2 ? Colors.white : Colors.white60),
-                onPressed: () => _onItemTapped(2),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),*/
+      ),
+
     );
   }
 }
