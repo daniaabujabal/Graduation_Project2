@@ -1,57 +1,65 @@
 
   import 'dart:convert';
-  import 'package:flutter/services.dart' show rootBundle;
-  import 'models/Product.dart';
+  import 'package:http/http.dart' as http;
+  
+  //import 'package:flutter/services.dart' show rootBundle;
+  //import 'models/Product.dart';
   import 'models/Pharmacy.dart';
 
-  class ApiService {
-    Future<List<dynamic>> searchProductsAndPharmacies(String query,{String? sortBy}) async {
-    final String jsonString = await rootBundle.loadString('assets/sample_data.json');
-    final jsonResponse = json.decode(jsonString);
-    List<dynamic> searchResults = [];
 
+
+class ApiService {
+  final String baseUrl = "https://apiurl"; 
+
+  Future<List<dynamic>> searchProductsAndPharmacies(String query, {String? sortBy}) async {
+    var url = Uri.parse('$baseUrl'); 
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> searchResults = [];
     // Search for pharmacies
-    var pharmacies = jsonResponse['pharmacies'] as List;
-    var matchedPharmacies = pharmacies.where((pharm) {
-      return pharm['name'].toString().toLowerCase().contains(query.toLowerCase());
-    }).map((e) => Pharmacy.fromJson(e)).toList();
 
-    // Add matched pharmacies to the search results
-    searchResults.addAll(matchedPharmacies.map((pharmacy) {
-      return {
-        'type': 'pharmacy',
-        'data': pharmacy
-      };
-    }));
+      var pharmacies = jsonResponse['pharmacies'] as List;
+      var matchedPharmacies = pharmacies.where((pharm) {
+        return pharm['name'].toString().toLowerCase().contains(query.toLowerCase());
+      }).map((e) => Pharmacy.fromJson(e)).toList();
 
-    // Search for products in all pharmacies
-    for (var pharmacyJson in pharmacies) {
-      var pharmacy = Pharmacy.fromJson(pharmacyJson);
-      var matchedProducts = pharmacy.products.where((product) {
-        return product.tradeName.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-
-      // Add matched products and their respective pharmacies to the search results
-      searchResults.addAll(matchedProducts.map((product) {
+    // add matched pharmacies to the search results
+      searchResults.addAll(matchedPharmacies.map((pharmacy) {
         return {
-          'type': 'product',
-          'data': product,
-          'pharmacy': pharmacy
+          'type': 'pharmacy',
+          'data': pharmacy
         };
       }));
-    }  if (sortBy != null) {
-      if (sortBy == 'price') {
-        // Debugging
-        print('Before Sorting by price: $searchResults');
-        searchResults.sort((a, b) => a['product'].publicPrice.compareTo(b['product'].publicPrice));
-        print('After Sorting by price: $searchResults');
-      } else if (sortBy == 'rating') {
-        print('Before Sorting by rating: $searchResults');
-        searchResults.sort((a, b) => b['product'].rating.compareTo(a['product'].rating));
-        print('After Sorting by rating: $searchResults');
-      }
-    }
 
-  return searchResults;
+      for (var pharmacyJson in jsonResponse['pharmacies']) {
+        var pharmacy = Pharmacy.fromJson(pharmacyJson);
+        var matchedProducts = pharmacy.products.where((product) {
+          return product.tradeName.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+
+      // add matched products and their respective pharmacies to the search results
+        searchResults.addAll(matchedProducts.map((product) {
+          return {
+            'type': 'product',
+            'data': product,
+            'pharmacy': pharmacy
+          };
+        }));
+      }
+
+      if (sortBy != null) {
+        if (sortBy == 'price') {
+          searchResults.sort((a, b) => a['data'].publicPrice.compareTo(b['data'].publicPrice));
+        } else if (sortBy == 'rating') {
+          searchResults.sort((a, b) => b['data'].rating.compareTo(a['data'].rating));
+        }
+      }
+
+      return searchResults;
+    } else {
+      throw Exception('Failed to load data from the API');
     }
   }
+}

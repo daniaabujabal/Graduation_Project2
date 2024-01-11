@@ -19,6 +19,7 @@ import 'package:graduation_project2/Pages/pharmacy_Info.dart';
 
 import 'package:graduation_project2/services/models/User.dart';
 import 'package:graduation_project2/services/models/User_Product.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
@@ -396,7 +397,7 @@ List<dynamic> allPharmacies = [];
                              Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy), 
+            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy,), 
           ),);
                             
                             },
