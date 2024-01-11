@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:graduation_project2/Pages/navigation.dart';
 import 'package:graduation_project2/Start_Pages/Sign_in.dart';
 
-
 class SignUpForm extends StatefulWidget {
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -35,12 +34,17 @@ class _SignUpFormState extends State<SignUpForm> {
       'password': _passwordController.text,
     };
 
+//User user
+//name
+//pasword
+//phonenumber
+//...
     try {
       final response = await http.post(
-        Uri.parse('https://api/register'),
+        Uri.parse('https://localhost:44387/api/Users'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-        },//when sending info to API give the API what information type is (utf-8)
+        }, //when sending info to API give the API what information type is (utf-8)
         body: json.encode(user),
       );
 
@@ -51,7 +55,9 @@ class _SignUpFormState extends State<SignUpForm> {
         final responseData = json.decode(response.body);
         //API sends a message => error
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(responseData['message'] ?? 'Failed to register user.')),
+          SnackBar(
+              content:
+                  Text(responseData['message'] ?? 'Failed to register user.')),
         );
         return false;
       }
@@ -75,36 +81,53 @@ class _SignUpFormState extends State<SignUpForm> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(hintText: 'Enter Name',hintStyle: TextStyle(color: Colors.white70),
-    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        labelStyle: TextStyle(color: Colors.white70),
-),
+                decoration: InputDecoration(
+                  hintText: 'Enter Name',
+                  hintStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white70)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  labelStyle: TextStyle(color: Colors.white70),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter your name';
+                  if (value == null || value.isEmpty)
+                    return 'Please enter your name';
                   return null;
                 },
               ),
               TextFormField(
                 controller: _phoneController,
-                decoration: InputDecoration(hintText: 'Enter Phone number',hintStyle: TextStyle(color: Colors.white70),
-    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        labelStyle: TextStyle(color: Colors.white70),),
+                decoration: InputDecoration(
+                  hintText: 'Enter Phone number',
+                  hintStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white70)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  labelStyle: TextStyle(color: Colors.white70),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter your phone number';
+                  if (value == null || value.isEmpty)
+                    return 'Please enter your phone number';
                   return null;
                 },
               ),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(hintText: 'Enter Password',hintStyle: TextStyle(color: Colors.white70),
-    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        labelStyle: TextStyle(color: Colors.white70),),
+                decoration: InputDecoration(
+                  hintText: 'Enter Password',
+                  hintStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white70)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  labelStyle: TextStyle(color: Colors.white70),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please enter a password';
+                  if (value == null || value.isEmpty)
+                    return 'Please enter a password';
                   if (_confirmPasswordController.text != value)
                     return 'Passwords do not match';
                   return null;
@@ -113,12 +136,18 @@ class _SignUpFormState extends State<SignUpForm> {
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: true,
-                decoration: InputDecoration(hintText: 'Re-Enter Password',hintStyle: TextStyle(color: Colors.white70),
-    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        labelStyle: TextStyle(color: Colors.white70),),
+                decoration: InputDecoration(
+                  hintText: 'Re-Enter Password',
+                  hintStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white70)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  labelStyle: TextStyle(color: Colors.white70),
+                ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Please re-enter your password';
+                  if (value == null || value.isEmpty)
+                    return 'Please re-enter your password';
                   if (_passwordController.text != value)
                     return 'Passwords do not match';
                   return null;
@@ -132,11 +161,12 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (registrationSuccessful) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => MainNavigationPage()),
+                        MaterialPageRoute(
+                            builder: (context) => MainNavigationPage()),
                       );
                     } else {
-                      ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Failed to register user.')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to register user.')));
                     }
                   }
                 },

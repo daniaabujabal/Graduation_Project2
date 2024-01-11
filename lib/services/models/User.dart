@@ -1,4 +1,4 @@
-import 'FeedBack.dart'; 
+import 'FeedBack.dart';
 import 'User_Product.dart'; // And for Product
 
 class User {
@@ -8,7 +8,7 @@ class User {
   final String phoneNumber;
   final double latitude;
   final double longitude;
-  final List<FeedBack> feedBacks; 
+  final List<FeedBack> feedBacks;
   final List<UserProduct> userProducts;
 
   User({
@@ -30,8 +30,11 @@ class User {
       phoneNumber: json['phoneNumber'],
       latitude: json['latitude'],
       longitude: json['longitude'],
-      feedBacks: (json['feedBacks'] as List).map((i) => FeedBack.fromJson(i)).toList(),
-      userProducts: (json['userProducts'] as List).map((i) => UserProduct.fromJson(i)).toList(),
+      feedBacks:
+          (json['feedBacks'] as List).map((i) => FeedBack.fromJson(i)).toList(),
+      userProducts: (json['userProducts'] as List)
+          .map((i) => UserProduct.fromJson(i))
+          .toList(),
     );
   }
 
