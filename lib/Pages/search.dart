@@ -255,7 +255,7 @@ Widget _buildPharmacyCard(BuildContext context, Pharmacy pharmacy) {
           Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy),
+            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy,),
           ),
         );    },
     child: Card(

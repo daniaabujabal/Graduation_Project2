@@ -7,6 +7,7 @@ import 'package:graduation_project2/services/models/Pharmacy.dart';
 
 class PharmacyInfoPage extends StatelessWidget {
   final Pharmacy pharmacy;
+  
 
   PharmacyInfoPage({Key? key, required this.pharmacy}) : super(key: key);
   

@@ -11,16 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
-
-
 import 'package:graduation_project2/Pages/search.dart';
 import 'package:graduation_project2/Pages/wishlist_Page.dart';
 import 'package:graduation_project2/Pages/pharmacy_Info.dart';
 
 import 'package:graduation_project2/services/models/User.dart';
 import 'package:graduation_project2/services/models/User_Product.dart';
-
-
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,11 +27,10 @@ class HomePage extends StatefulWidget {
 }
 //wishlist_Api apiService = wishlist_Api();
 
-
 class _HomePageState extends State<HomePage> {
   final double cardBorderRadius = 25.0;
   TextEditingController searchController = TextEditingController();
-List<dynamic> allPharmacies = [];
+  List<dynamic> allPharmacies = [];
   List<dynamic> highlyRatedPharmacies = [];
 
   @override
@@ -44,15 +40,15 @@ List<dynamic> allPharmacies = [];
   }
 
   Future<void> loadJson() async {
-  String jsonString = await rootBundle.loadString('assets/sample_data.json');
-  final jsonResponse = json.decode(jsonString);
-  setState(() {
-    allPharmacies = jsonResponse['pharmacies'] as List;
-    highlyRatedPharmacies = allPharmacies.where((pharmacy) => pharmacy['rating'] >= 4.0).toList();
-  });
-  print(highlyRatedPharmacies); 
-}
-
+    String jsonString = await rootBundle.loadString('assets/sample_data.json');
+    final jsonResponse = json.decode(jsonString);
+    setState(() {
+      allPharmacies = jsonResponse['pharmacies'] as List;
+      highlyRatedPharmacies =
+          allPharmacies.where((pharmacy) => pharmacy['rating'] >= 4.0).toList();
+    });
+    print(highlyRatedPharmacies);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,18 +99,19 @@ List<dynamic> allPharmacies = [];
                     child: Padding(
                       padding: const EdgeInsets.all(2),
                       child: IconButton(
-                        icon: SvgPicture.asset(
-                          ImageConstant.imgIconHeart,
-                          width: 24,
-                          height: 24,
-                        ),
-                        onPressed:() {
-                           Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => WishlistPage(searchQuery: "value")), 
-        );
-                        }
-                      ),
+                          icon: SvgPicture.asset(
+                            ImageConstant.imgIconHeart,
+                            width: 24,
+                            height: 24,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      WishlistPage(searchQuery: "value")),
+                            );
+                          }),
                     ),
                   ),
                 ],
@@ -123,25 +120,24 @@ List<dynamic> allPharmacies = [];
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
-                controller: searchController,
-
-                decoration: InputDecoration(
-                  hintText: "Search a product or a pharmacy",
-                  hintStyle: TextStyle(color: Colors.black45),
-                  filled: true,
-                  fillColor: const Color.fromARGB(255, 222, 224, 232),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(27.0),
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: "Search a product or a pharmacy",
+                    hintStyle: TextStyle(color: Colors.black45),
+                    filled: true,
+                    fillColor: const Color.fromARGB(255, 222, 224, 232),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(27.0),
+                    ),
+                    prefixIcon: const Icon(Icons.search),
                   ),
-                  prefixIcon: const Icon(Icons.search),
-                ),
-             // onFieldSubmitted: (value) => _navigateToSearchPage(value),
-                onTap:(){
+                  // onFieldSubmitted: (value) => _navigateToSearchPage(value),
+                  onTap: () {
                     showSearch(context: context, delegate: DataSearch());
                   }
 
-               /* onFieldSubmitted: (value) {
+                  /* onFieldSubmitted: (value) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -149,7 +145,7 @@ List<dynamic> allPharmacies = [];
                     ),
                   );
                 },*/
-              ),
+                  ),
             ),
             const SizedBox(height: 15),
             Expanded(
@@ -169,92 +165,108 @@ List<dynamic> allPharmacies = [];
                       child: PageView(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: GestureDetector(
-                         onTap:(){
-                           showSearch(
-                             context: context,
-                             delegate: DataSearch(initialQuery: 'Panadol'), // Panadol as the initial query
-                           );
-                             },
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                ClipRRect(
-
-                                  borderRadius: BorderRadius.circular(cardBorderRadius),
-                                  child: Image.asset(ImageConstant.imgRectangle4, fit: BoxFit.cover),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(cardBorderRadius),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                      colors: [Colors.black.withAlpha(100), Colors.transparent],
+                              onTap: () {
+                                showSearch(
+                                  context: context,
+                                  delegate: DataSearch(
+                                      initialQuery:
+                                          'Panadol'), // Panadol as the initial query
+                                );
+                              },
+                              child: Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.circular(cardBorderRadius),
+                                    child: Image.asset(
+                                        ImageConstant.imgRectangle4,
+                                        fit: BoxFit.cover),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          cardBorderRadius),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          Colors.black.withAlpha(100),
+                                          Colors.transparent
+                                        ],
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: const Text(
+                                      'Panadol',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: const Text(
-                                    'Panadol',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: GestureDetector(
-                              onTap:(){
-                               showSearch(
+                              onTap: () {
+                                showSearch(
                                   context: context,
                                   delegate: DataSearch(initialQuery: 'Panadol'),
                                 );
                               },
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(cardBorderRadius),
-                                  child: Image.asset(ImageConstant.imgRectangle4149x329, fit: BoxFit.cover),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(cardBorderRadius),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                      colors: [Colors.black.withAlpha(100), Colors.transparent],
+                              child: Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.circular(cardBorderRadius),
+                                    child: Image.asset(
+                                        ImageConstant.imgRectangle4149x329,
+                                        fit: BoxFit.cover),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          cardBorderRadius),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          Colors.black.withAlpha(100),
+                                          Colors.transparent
+                                        ],
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      'Panadol',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Panadol',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-
-                          ),
-
                         ],
                       ),
                     ),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
                       child: Row(
                         children: [
                           Icon(
@@ -273,27 +285,22 @@ List<dynamic> allPharmacies = [];
                         ],
                       ),
                     ),
-
                     Container(
                       height: 120,
-
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: 10,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: ()
-                            {
-
-
-
-                            },
+                            onTap: () {},
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.93,
-                              margin: EdgeInsets.only(left: 16, right: index == 9 ? 16 : 0),
+                              margin: EdgeInsets.only(
+                                  left: 16, right: index == 9 ? 16 : 0),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(cardBorderRadius),
+                                borderRadius:
+                                    BorderRadius.circular(cardBorderRadius),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
@@ -305,12 +312,14 @@ List<dynamic> allPharmacies = [];
                               child: Row(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(10), // Space around the icon
+                                    padding: const EdgeInsets.all(
+                                        10), // Space around the icon
                                     child: Container(
                                       width: 50,
                                       height: 50,
                                       decoration: BoxDecoration(
-                                        color: Colors.cyan[100], // Icon background color
+                                        color: Colors
+                                            .cyan[100], // Icon background color
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Icon(
@@ -322,17 +331,21 @@ List<dynamic> allPharmacies = [];
                                   ),
                                   Expanded(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             'Pharmacy One',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
-                                              color: Color(0xFF71CDD7), // Text color
+                                              color: Color(
+                                                  0xFF71CDD7), // Text color
                                             ),
                                           ),
                                           Text(
@@ -351,7 +364,6 @@ List<dynamic> allPharmacies = [];
                                       ),
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -360,9 +372,9 @@ List<dynamic> allPharmacies = [];
                       ),
                     ),
                     const SizedBox(height: 10),
-
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -387,25 +399,30 @@ List<dynamic> allPharmacies = [];
                       height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                       itemCount: highlyRatedPharmacies.length, 
+                        itemCount: highlyRatedPharmacies.length,
                         itemBuilder: (context, index) {
-                        Map<String, dynamic> pharmacyMap = highlyRatedPharmacies[index];
-    Pharmacy pharmacy = Pharmacy.fromJson(pharmacyMap);
+                          Map<String, dynamic> pharmacyMap =
+                              highlyRatedPharmacies[index];
+                          Pharmacy pharmacy = Pharmacy.fromJson(pharmacyMap);
                           return InkWell(
                             onTap: () {
-                             Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy), 
-          ),);
-                            
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PharmacyInfoPage(
+                                    pharmacy: pharmacy,
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.93,
-                              margin: EdgeInsets.only(left: 16, right: index == 9 ? 16 : 0),
+                              margin: EdgeInsets.only(
+                                  left: 16, right: index == 9 ? 16 : 0),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(cardBorderRadius),
+                                borderRadius:
+                                    BorderRadius.circular(cardBorderRadius),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
@@ -422,44 +439,46 @@ List<dynamic> allPharmacies = [];
                                       width: 50,
                                       height: 50,
                                       decoration: BoxDecoration(
-                                        color: Colors.cyan[100], 
+                                        color: Colors.cyan[100],
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Icon(
                                         Icons.local_pharmacy,
                                         color: Color(0xFF4CA6C2),
-                                        size: 30, 
+                                        size: 30,
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
-                          pharmacy.name, 
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Color(0xFF71CDD7),
-                          ),
+                                            pharmacy.name,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Color(0xFF71CDD7),
+                                            ),
                                           ),
-                      SizedBox(height: 10),
-          _buildRatingRow(pharmacy.rating),
-                                           Text(
-                          pharmacy.description, 
-                          style: TextStyle(
-                            color: Color(0xFF71CDD7),
-                          ),
+                                          SizedBox(height: 10),
+                                          _buildRatingRow(pharmacy.rating),
+                                          Text(
+                                            pharmacy.description,
+                                            style: TextStyle(
+                                              color: Color(0xFF71CDD7),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -467,7 +486,6 @@ List<dynamic> allPharmacies = [];
                         },
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -475,28 +493,27 @@ List<dynamic> allPharmacies = [];
           ],
         ),
       ),
-
     );
   }
 
-Widget _buildRatingRow(double rating) {
+  Widget _buildRatingRow(double rating) {
     int fullStars = rating.floor();
     bool hasHalfStar = rating - fullStars >= 0.5;
     int maxStars = 5;
 
     return Row(
-  children: List<Widget>.generate(maxStars, (index) {
-    Icon icon;
-    if (index < fullStars) {
-      icon = Icon(Icons.star, color: Color(0xFF55AFBC));
-    } else if (hasHalfStar && index == fullStars) {
-      icon = Icon(Icons.star_half, color: Color(0xFF55AFBC));
-      hasHalfStar = false; 
-    } else {
-      icon = Icon(Icons.star_border, color: Color(0xFF55AFBC));
-    }
-    return icon;
-  }),
-);
+      children: List<Widget>.generate(maxStars, (index) {
+        Icon icon;
+        if (index < fullStars) {
+          icon = Icon(Icons.star, color: Color(0xFF55AFBC));
+        } else if (hasHalfStar && index == fullStars) {
+          icon = Icon(Icons.star_half, color: Color(0xFF55AFBC));
+          hasHalfStar = false;
+        } else {
+          icon = Icon(Icons.star_border, color: Color(0xFF55AFBC));
+        }
+        return icon;
+      }),
+    );
   }
 }
