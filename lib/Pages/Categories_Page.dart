@@ -9,7 +9,7 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   TextEditingController searchController = TextEditingController();
 
-  // Add your category names here.
+
   final List<String> categoryNames = [
     'All', 'New born', 'Allergies', 'Hair', 'Skin', 'Muscle gel', 'Burn care', 'Pills', 'Mothers',
 

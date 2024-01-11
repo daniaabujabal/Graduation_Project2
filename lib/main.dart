@@ -3,6 +3,7 @@ import 'Pages/Home_Page.dart';
 import 'Pages/Search_Page.dart';
 import 'Pages/Categories_Page.dart';
 import 'Pages/Navigation.dart';
+import 'Start_Pages/Sign_Up_Page.dart';
 
 void main()  {
 
@@ -14,15 +15,27 @@ void main()  {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+/*class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MainNavigationPage(),
     );
+  }*/
+  class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor: Color(0xFF55AFBC),
+      ),
+      home:SignUpScreen(), //  starting pages
+    );
   }
-}
+  }
 
 
 

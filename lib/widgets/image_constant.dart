@@ -47,4 +47,6 @@ class ImageConstant {
   static String imgIconCog = '$imagePath/img_icon_cog.svg';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
+  static String NoBackgroundLOGO ='assets/images/NobackgroundLOGO.png';
+  static String backIcon ='assets/images/back-icon-png.png';
 }
