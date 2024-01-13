@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
 import 'package:graduation_project2/Pages/navigation.dart';
 import 'package:graduation_project2/Start_Pages/Sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class SignUpForm extends StatefulWidget {
@@ -19,50 +22,123 @@ class _SignUpFormState extends State<SignUpForm> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  Future<bool> registerUser() async {
-    // convert phoneNumber to int
-    int? phone = int.tryParse(_phoneController.text);
-    if (phone == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid phone number format.')),
-      );
-      return false;
-    }
 
-    final user = {
-      'name': _nameController.text,
-      'phone': _phoneController.text,
-      'password': _passwordController.text,
-    };
-
+  
+ Future<void> _handleLocationPermission(BuildContext context) async {
     try {
-      final response = await http.post(
-        Uri.parse('https://api/register'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },//when sending info to API give the API what information type is (utf-8)
-        body: json.encode(user),
+      Position position = await _determinePosition();
+      await _saveCurrentLocation(position);
+      print(position.altitude);
+      print(position.longitude);
+     
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainNavigationPage()),
       );
-
-      if (response.statusCode == 200) {
-        // API returns 200 status => successful registration
-        return true;
-      } else {
-        final responseData = json.decode(response.body);
-        //API sends a message => error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(responseData['message'] ?? 'Failed to register user.')),
-        );
-        return false;
-      }
     } catch (e) {
-      // Handle network error..
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred: ${e.toString()}')),
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('An error occurred: $e'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
       );
-      return false;
     }
   }
+   Future<void> _saveCurrentLocation(Position position) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('latitude', position.latitude);
+    await prefs.setDouble('longitude', position.longitude);
+  }
+
+  Future<Position?> _getSavedLocation() async {
+    final prefs = await SharedPreferences.getInstance();
+    double? latitude = prefs.getDouble('latitude');
+    double? longitude = prefs.getDouble('longitude');
+
+    if (latitude != null && longitude != null) {
+      return Position(latitude: latitude, longitude: longitude, timestamp: DateTime.now(), accuracy: 0, altitude: 0, heading: 0, speed: 0, speedAccuracy: 0, altitudeAccuracy: 0.0, headingAccuracy: 0.0);
+    }
+    return null;
+  }
+
+  
+ Future<Position> _determinePosition() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      throw Exception('Location services are disabled.');
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception(
+        'Location permissions are permanently denied, we cannot request permissions.'
+      );
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+ 
+
+
+  Future<bool> registerUser(Position position) async {
+  // Assuming you convert phone number to an integer as in your previous code.
+  int? phone = int.tryParse(_phoneController.text);
+  if (phone == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Invalid phone number format.')),
+    );
+    return false;
+  }
+
+  final user = {
+    'name': _nameController.text,
+    'phone': phone.toString(),
+    'password': _passwordController.text,
+    'latitude': position.latitude.toString(),
+    'longitude': position.longitude.toString(),
+  };
+
+  try {
+    final response = await http.post(
+      Uri.parse('https://api.com/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(user),
+    );
+
+    if (response.statusCode == 200) {
+      // registration was successful
+      return true;
+    } else {
+      throw Exception('Failed to register user.');
+    }
+  } catch (e) {
+    // handle network error or any other error
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('An error occurred: ${e.toString()}')),
+    );
+    return false;
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,18 +203,11 @@ class _SignUpFormState extends State<SignUpForm> {
               ElevatedButton(
                 child: Text('Sign Up'),
                 onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    bool registrationSuccessful = await registerUser();
-                    if (registrationSuccessful) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainNavigationPage()),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('Failed to register user.')));
-                    }
-                  }
+                 if (_formKey.currentState?.validate() ?? false) {
+      _handleLocationPermission(context);
+  //
+  // }
+  }
                 },
               ),
             ],

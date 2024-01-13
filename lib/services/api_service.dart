@@ -1,45 +1,38 @@
-import 'dart:convert';
-  import 'package:http/http.dart' as http;
-  
-  //import 'package:flutter/services.dart' show rootBundle;
-  //import 'models/Product.dart';
+  import 'dart:convert';
+  import 'package:graduation_project2/services/models/FeedBack.dart';
+import 'package:http/http.dart' as http;
+
+  import 'package:flutter/services.dart' show rootBundle;
+  import 'models/Product.dart';
   import 'models/Pharmacy.dart';
 
-
-
-class ApiService {
-  final String baseUrl = "https://apiurl"; 
+ class ApiService {
 
   Future<List<dynamic>> searchProductsAndPharmacies(String query, {String? sortBy}) async {
-    var url = Uri.parse('$baseUrl'); 
-    var response = await http.get(url);
+    final String jsonString = await rootBundle.loadString('assets/sample_data.json');
+    final jsonResponse = json.decode(jsonString);
+    List<dynamic> searchResults = [];
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      List<dynamic> searchResults = [];
-    // Search for pharmacies
+    // Search for pharmacies and products
+    var pharmacies = jsonResponse['pharmacies'] as List;
+    List<Pharmacy> matchedPharmacies = [];
+    List<dynamic> matchedProducts = [];
 
-      var pharmacies = jsonResponse['pharmacies'] as List;
-      var matchedPharmacies = pharmacies.where((pharm) {
-        return pharm['name'].toString().toLowerCase().contains(query.toLowerCase());
-      }).map((e) => Pharmacy.fromJson(e)).toList();
+    for (var pharmacyJson in pharmacies) {
+      var pharmacy = Pharmacy.fromJson(pharmacyJson);
 
-    // add matched pharmacies to the search results
-      searchResults.addAll(matchedPharmacies.map((pharmacy) {
-        return {
-          'type': 'pharmacy',
-          'data': pharmacy
-        };
-      }));
+      // Check if the pharmacy name matches the query
+      if (pharmacy.name.toLowerCase().contains(query.toLowerCase())) {
+        matchedPharmacies.add(pharmacy);
+      }
 
-      for (var pharmacyJson in jsonResponse['pharmacies']) {
-        var pharmacy = Pharmacy.fromJson(pharmacyJson);
-        var matchedProducts = pharmacy.products.where((product) {
-          return product.tradeName.toLowerCase().contains(query.toLowerCase());
-        }).toList();
+      // Check if any product in the pharmacy matches the query
+      var pharmacyProducts = pharmacy.products.where((product) {
+        return product.tradeName.toLowerCase().contains(query.toLowerCase());
+      }).toList();
 
-      // add matched products and their respective pharmacies to the search results
-        searchResults.addAll(matchedProducts.map((product) {
+      if (pharmacyProducts.isNotEmpty) {
+        matchedProducts.addAll(pharmacyProducts.map((product) {
           return {
             'type': 'product',
             'data': product,
@@ -47,18 +40,36 @@ class ApiService {
           };
         }));
       }
+    }
 
-      if (sortBy != null) {
-        if (sortBy == 'price') {
-          searchResults.sort((a, b) => a['data'].publicPrice.compareTo(b['data'].publicPrice));
-        } else if (sortBy == 'rating') {
-          searchResults.sort((a, b) => b['data'].rating.compareTo(a['data'].rating));
-        }
-      }
+    if (sortBy == 'rating') {
+      matchedPharmacies.sort((a, b) => b.rating.compareTo(a.rating));
+    }
 
-      return searchResults;
+    
+    if (sortBy == 'price') {
+      matchedProducts.sort((a, b) => a['data'].publicPrice.compareTo(b['data'].publicPrice));
+    }
+
+    searchResults.addAll(matchedPharmacies.map((pharmacy) => {
+      'type': 'pharmacy',
+      'data': pharmacy
+    }));
+    searchResults.addAll(matchedProducts);
+
+    return searchResults;
+  }
+
+  Future<List<FeedBack>> fetchFeedbackForPharmacy(int pharmacyId) async {
+    var url = Uri.parse('https://apo.com/feedback');
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> feedbackJson = json.decode(response.body);
+      return feedbackJson.map((json) => FeedBack.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load data from the API');
+      throw Exception('Failed to load feedback');
     }
   }
 }
+

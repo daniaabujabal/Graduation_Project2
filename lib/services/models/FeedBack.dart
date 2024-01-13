@@ -1,14 +1,14 @@
 import 'Pharmacy.dart';
 import 'User.dart';
 class FeedBack {
-  final bool status; 
+  final bool status; // Note: Ensure correct spelling here
   final String text;
   final String title;
-  final double rating; 
+  final double rating; // 'Ratting' from backend should be 'rating' in Dart
   final int userId;
   final int pharmacyId;
-  final User user;
-  final Pharmacy pharmacy;
+  final User user; // Assuming you have a User class defined
+  final Pharmacy pharmacy; // Assuming you have a Pharmacy class defined
 
   FeedBack({
     required this.status,
@@ -23,14 +23,14 @@ class FeedBack {
 
   factory FeedBack.fromJson(Map<String, dynamic> json) {
     return FeedBack(
-      status: json['Statues'],
-      text: json['Text'],
-      title: json['Title'],
-      rating: json['Ratting'].toDouble(),
-      userId: json['UserId'],
-      pharmacyId: json['PharmacyId'],
-      user: User.fromJson(json['Users']),
-      pharmacy: Pharmacy.fromJson(json['Pharmacy']),
+      status: json['Statues'] ?? false, // Default to false if not provided
+      text: json['Text'] ?? '',
+      title: json['Title'] ?? '',
+      rating: (json['Ratting'] as num?)?.toDouble() ?? 0.0, // Convert to double
+      userId: json['UserId'] ?? 0,
+      pharmacyId: json['PharmacyId'] ?? 0,
+      user: User.fromJson(json['Users'] ?? {}), // Handle null case
+      pharmacy: Pharmacy.fromJson(json['Pharmacy'] ?? {}), // Handle null case
     );
   }
 

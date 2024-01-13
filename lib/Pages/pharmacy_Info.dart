@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/Pages/product_Info.dart';
+import 'package:graduation_project2/services/models/FeedBack.dart';
 import 'package:graduation_project2/services/models/Product.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
 import 'package:graduation_project2/services/models/Pharmacy.dart';
@@ -106,9 +107,9 @@ class PharmacyInfoPage extends StatelessWidget {
       ),
     ],
   ),
-),            
-                    
-                    const SizedBox(height: 10),
+),    
+ const SizedBox(height: 10), 
+ const SizedBox(height: 10),
 
                    Container(
                       height: 140, 
@@ -120,13 +121,48 @@ class PharmacyInfoPage extends StatelessWidget {
                           return _buildProductCard(context, product, pharmacy);
                         },
                       ),
-                   ),
+                   ),   
+                                       const SizedBox(height: 10),
+ 
+Container(
+                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        'Customers Feedback',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+      ),
+    ],   
+  ),
+),
+                    
+                    
+                    const SizedBox(height: 10),
+
+                   Container(
+              height: 140, // Adjust height as needed
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: pharmacy.feedbacks.length,
+                itemBuilder: (context, index) {
+                  FeedBack feedback = pharmacy.feedbacks[index];
+                  return _buildFeedbackCard(context, feedback, pharmacy);
+                },
+              ),
+            ),
                 
             
                         ],
                       ),
-                    ),  
-        ), 
+                    ), 
+                    
+              ),
+        
            
         ),
           ]
@@ -169,7 +205,7 @@ class PharmacyInfoPage extends StatelessWidget {
               children: [
                 Icon(Icons.access_time, color: Color(0xFF55AFBC)),
                 const SizedBox(width: 8),
-                Text('8:00 AM - 11:00 PM'), 
+                Text(pharmacy.workingHours), 
               ],
             ),
             const SizedBox(height: 10),
@@ -187,6 +223,45 @@ class PharmacyInfoPage extends StatelessWidget {
       ),
     );
   }
+    Widget _buildFeedbackCard(BuildContext context, FeedBack feedback, Pharmacy pharmacy) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      margin: const EdgeInsets.all(16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              feedback.title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF4CA6C2
+),
+),
+            ),
+
+const SizedBox(height: 10),
+Text(
+feedback.text,
+style: TextStyle(color: Color(0xFF4CA6C2)),
+),
+const SizedBox(height: 10),
+Row(
+children: List.generate(5, (index) {
+return Icon(
+index < feedback.rating ? Icons.star : Icons.star_border,
+color: Color(0xFF55AFBC),
+);
+}),
+),
+],
+),
+),
+);
+}
+}
 
  Widget _buildRatingRow(double rating) {
   int fullStars = rating.floor();
@@ -206,7 +281,7 @@ class PharmacyInfoPage extends StatelessWidget {
     }),
   );
 }
-}
+
 Widget _buildProductCard(BuildContext context, Product product, Pharmacy pharmacy) {
     return InkWell(
     onTap: () {
