@@ -30,8 +30,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
     final user = {
       'name': _nameController.text,
-      'phone': _phoneController.text,
       'password': _passwordController.text,
+      'phone': _phoneController.text,
     };
 
 //User user
@@ -41,9 +41,9 @@ class _SignUpFormState extends State<SignUpForm> {
 //...
     try {
       final response = await http.post(
-        Uri.parse('https://localhost:44387/api/Users'),
+        Uri.parse('http://192.168.100.134:44387/api/Users/register'),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json;',
         }, //when sending info to API give the API what information type is (utf-8)
         body: json.encode(user),
       );

@@ -4,11 +4,13 @@ import 'Pages/Search_Page.dart';
 import 'Pages/Categories_Page.dart';
 import 'Pages/Navigation.dart';
 import 'Start_Pages/Sign_Up_Page.dart';
+//import 'dart:io';
 
-void main()  {
-
+void main() {
   runApp(MyApp());
-}class MyApp extends StatefulWidget {
+}
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
@@ -23,7 +25,7 @@ void main()  {
       home: MainNavigationPage(),
     );
   }*/
-  class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,10 +34,10 @@ void main()  {
       theme: ThemeData(
         primaryColor: Color(0xFF55AFBC),
       ),
-      home:SignUpScreen(), //  starting pages
+      home: SignUpScreen(), //  starting pages
     );
   }
-  }
+}
 
 
 
