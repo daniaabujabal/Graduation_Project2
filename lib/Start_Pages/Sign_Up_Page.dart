@@ -4,16 +4,17 @@ import 'SignUpForm.dart';
 import 'package:graduation_project2/pages/navigation.dart';
 import 'package:graduation_project2/Start_Pages/Sign_in.dart';
 
-
 class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -25,32 +26,39 @@ class SignUpScreen extends StatelessWidget {
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround, 
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              Image.asset(ImageConstant.NoBackgroundLOGO, height: MediaQuery.of(context).size.height * 0.25),
-              Text(
+              Image.asset(ImageConstant.NoBackgroundLOGO,
+                  height: MediaQuery.of(context).size.height * 0.25),
+              const Text(
                 "Welcome",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               SignUpForm(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05), 
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MainNavigationPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const MainNavigationPage()),
                   );
                 },
-                child: Text('Skip Account', style: TextStyle(color: Colors.white)),
+                child: const Text('Skip Account',
+                    style: TextStyle(color: Colors.white)),
               ),
               TextButton(
                 onPressed: () {
-Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
-    );                },
-                child: Text(
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                  );
+                },
+                child: const Text(
                   'Already Registered? Log In',
                   style: TextStyle(color: Colors.white),
                 ),

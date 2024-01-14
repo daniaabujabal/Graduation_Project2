@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
 
-    TextStyle headerStyle = TextStyle(
+    TextStyle headerStyle = const TextStyle(
       color: Colors.white,
       fontSize: 36,
       fontWeight: FontWeight.bold,
       shadows: [Shadow(blurRadius: 10, color: Colors.black45, offset: Offset(2,1))],
     );
 
-    TextStyle namePhoneStyle = TextStyle(
+    TextStyle namePhoneStyle = const TextStyle(
       color: Colors.white,
       fontSize: 22,
       shadows: [Shadow(blurRadius: 10, color: Colors.black45, offset: Offset(2, 1))],
     );
 
-    TextStyle optionStyle = TextStyle(
+    TextStyle optionStyle = const TextStyle(
       color: Colors.grey,
       fontSize: 20,
     );
 
 
-    Color switchColor = Color(0xFF71CDD7);
+    Color switchColor = const Color(0xFF71CDD7);
 
     return Scaffold(
       body: Container(
@@ -50,37 +52,37 @@ class SettingsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Name', style: namePhoneStyle),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text('Phone number', style: namePhoneStyle),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
 
                       },
-                      child: Text('Edit account'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[300],
                         foregroundColor: Colors.grey[800],
-                        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                       ),
+                      child: const Text('Edit account'),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
             Expanded(
               child: Container(
                 width: double.infinity,
-                margin: EdgeInsets.only(top: 32),
-                padding: EdgeInsets.all(16),
+                margin: const EdgeInsets.only(top: 32),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.95),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40),
                   ),
@@ -91,7 +93,7 @@ class SettingsPage extends StatelessWidget {
                     settingOption(context, 'Location', Icons.location_on, optionStyle),
                     settingOption(context, 'Ratings', Icons.star, optionStyle),
                     settingOption(context, 'Log out', Icons.exit_to_app, optionStyle),
-                    Divider(),
+                    const Divider(),
                     settingSwitchOption(
                         context,
                         'Language',
@@ -119,8 +121,8 @@ class SettingsPage extends StatelessWidget {
   Widget settingOption(BuildContext context, String title, IconData icon, TextStyle style) {
     return ListTile(
       title: Text(title, style: style),
-      leading: Icon(icon, color: Color(0xFF71CDD7)),
-      trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
+      leading: Icon(icon, color: const Color(0xFF71CDD7)),
+      trailing: const Icon(Icons.arrow_forward_ios, color: Colors.grey),
       onTap: () {
       },
     );
@@ -133,7 +135,7 @@ class SettingsPage extends StatelessWidget {
       onChanged: (newValue) {
       },
       activeColor: switchColor,
-      secondary: Icon(icon, color: Color(0xFF71CDD7)),
+      secondary: Icon(icon, color: const Color(0xFF71CDD7)),
     );
   }
 }

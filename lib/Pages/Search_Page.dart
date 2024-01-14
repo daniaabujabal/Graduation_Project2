@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
-import 'Setting_Page.dart';
 
 class SearchPage extends StatefulWidget {
   final String searchQuery;
 
-  const SearchPage({Key? key, required this.searchQuery}) : super(key: key);
+  const SearchPage({super.key, required this.searchQuery});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -54,10 +53,10 @@ class _SearchPageState extends State<SearchPage> {
         child: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            Expanded(
+            const Expanded(
               child: Text(
                 "Good Afternoon, Dania",
                 style: TextStyle(
@@ -103,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
               child: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Search a product or a pharmacy",
-                  hintStyle: TextStyle(color: Colors.black45),
+                  hintStyle: const TextStyle(color: Colors.black45),
                   filled: true,
                   fillColor: const Color.fromARGB(255, 222, 224, 232),
                   border: OutlineInputBorder(
@@ -120,7 +119,7 @@ class _SearchPageState extends State<SearchPage> {
                 padding: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: Colors.white54.withOpacity(0.5),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(70.0),
                     topRight: Radius.circular(70.0),
                   ),
@@ -140,13 +139,13 @@ class _SearchPageState extends State<SearchPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Icon(Icons.medication, size: 40, color: Color(0xFF4CA6C2)),
+                            const Icon(Icons.medication, size: 40, color: Color(0xFF4CA6C2)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   product['name'] ?? 'N/A',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF4CA6C2),
@@ -168,10 +167,10 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                               ],
                             ),
-                            Text(product['pharmacyName'] ?? 'N/A', style: TextStyle(color: Color(0xFF4CA6C2))),
-                            Text(product['address'] ?? 'N/A', style: TextStyle(color: Color(0xFF4CA6C2))),
-                            Text('Rating: ${product['rating'] ?? 'N/A'}', style: TextStyle(color: Color(0xFF4CA6C2))),
-                            Text('Price: ${product['price'] ?? 'N/A'}', style: TextStyle(color: Color(0xFF4CA6C2))),
+                            Text(product['pharmacyName'] ?? 'N/A', style: const TextStyle(color: Color(0xFF4CA6C2))),
+                            Text(product['address'] ?? 'N/A', style: const TextStyle(color: Color(0xFF4CA6C2))),
+                            Text('Rating: ${product['rating'] ?? 'N/A'}', style: const TextStyle(color: Color(0xFF4CA6C2))),
+                            Text('Price: ${product['price'] ?? 'N/A'}', style: const TextStyle(color: Color(0xFF4CA6C2))),
                           ],
                         ),
                       ),

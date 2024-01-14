@@ -3,24 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
-import 'Categories_Page.dart';
-import 'Search_Page.dart';
-import 'package:graduation_project2/services/models/Product.dart';
 import 'package:graduation_project2/services/models/Pharmacy.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:graduation_project2/Pages/search.dart';
 import 'package:graduation_project2/Pages/wishlist_Page.dart';
 import 'package:graduation_project2/Pages/pharmacy_Info.dart';
 
-import 'package:graduation_project2/services/models/User.dart';
-import 'package:graduation_project2/services/models/User_Product.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -73,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       "Good Afternoon, Dania",
                       style: TextStyle(
@@ -109,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      WishlistPage(searchQuery: "value")),
+                                      const WishlistPage(searchQuery: "value")),
                             );
                           }),
                     ),
@@ -123,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                   controller: searchController,
                   decoration: InputDecoration(
                     hintText: "Search a product or a pharmacy",
-                    hintStyle: TextStyle(color: Colors.black45),
+                    hintStyle: const TextStyle(color: Colors.black45),
                     filled: true,
                     fillColor: const Color.fromARGB(255, 222, 224, 232),
                     border: OutlineInputBorder(
@@ -153,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: Colors.white54.withOpacity(0.5),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(70.0),
                     topRight: Radius.circular(70.0),
                   ),
@@ -247,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Text(
+                                    child: const Text(
                                       'Panadol',
                                       style: TextStyle(
                                         fontSize: 24,
@@ -285,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -305,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
                                     blurRadius: 6,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
@@ -322,14 +315,14 @@ class _HomePageState extends State<HomePage> {
                                             .cyan[100], // Icon background color
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.local_pharmacy,
                                         color: Color(0xFF4CA6C2), // Icon color
                                         size: 30, // Icon size
                                       ),
                                     ),
                                   ),
-                                  Expanded(
+                                  const Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 16.0),
@@ -395,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -427,7 +420,7 @@ class _HomePageState extends State<HomePage> {
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
                                     blurRadius: 6,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
@@ -442,7 +435,7 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.cyan[100],
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.local_pharmacy,
                                         color: Color(0xFF4CA6C2),
                                         size: 30,
@@ -451,7 +444,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   Expanded(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 16.0),
                                       child: Column(
                                         crossAxisAlignment:
@@ -461,17 +454,17 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           Text(
                                             pharmacy.name,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 18,
                                               color: Color(0xFF71CDD7),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           _buildRatingRow(pharmacy.rating),
                                           Text(
                                             pharmacy.description,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Color(0xFF71CDD7),
                                             ),
                                           ),
@@ -505,12 +498,12 @@ class _HomePageState extends State<HomePage> {
       children: List<Widget>.generate(maxStars, (index) {
         Icon icon;
         if (index < fullStars) {
-          icon = Icon(Icons.star, color: Color(0xFF55AFBC));
+          icon = const Icon(Icons.star, color: Color(0xFF55AFBC));
         } else if (hasHalfStar && index == fullStars) {
-          icon = Icon(Icons.star_half, color: Color(0xFF55AFBC));
+          icon = const Icon(Icons.star_half, color: Color(0xFF55AFBC));
           hasHalfStar = false;
         } else {
-          icon = Icon(Icons.star_border, color: Color(0xFF55AFBC));
+          icon = const Icon(Icons.star_border, color: Color(0xFF55AFBC));
         }
         return icon;
       }),

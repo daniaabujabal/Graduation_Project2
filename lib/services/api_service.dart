@@ -10,7 +10,7 @@ class ApiService {
 
   Future<List<dynamic>> searchProductsAndPharmacies(String query,
       {String? sortBy}) async {
-    var url = Uri.parse('$baseUrl');
+    var url = Uri.parse(baseUrl);
     var response = await http.get(url);
 
     if (response.statusCode == 200) {

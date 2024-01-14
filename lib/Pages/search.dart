@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/Pages/pharmacy_Info.dart';
 import 'package:graduation_project2/Pages/product_Info.dart';
 import 'package:graduation_project2/services/api_service.dart';
-import 'package:graduation_project2/widgets/image_constant.dart';
 
 import '../services/models/Product.dart';
 import '../services/models/Pharmacy.dart';
@@ -23,13 +21,13 @@ class DataSearch extends SearchDelegate {
   List<Widget>? buildActions(BuildContext context) {
    return [
     IconButton(
-      icon: Icon(Icons.sort),
+      icon: const Icon(Icons.sort),
       onPressed: () {
         _showSortingOptions(context);
       },
     ),
     IconButton(
-      icon: Icon(Icons.clear),
+      icon: const Icon(Icons.clear),
       onPressed: () {
         query = "";
         showSuggestions(context);
@@ -93,12 +91,12 @@ void _showSortingOptions(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Sort By'),
+        title: const Text('Sort By'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              title: Text('Price'),
+              title: const Text('Price'),
               onTap: () {
                 selectedSort = 'price';
                 Navigator.pop(context);
@@ -106,7 +104,7 @@ void _showSortingOptions(BuildContext context) {
               },
             ),
             ListTile(
-              title: Text('Rating'),
+              title: const Text('Rating'),
               onTap: () {
                 selectedSort = 'rating';
                 Navigator.pop(context);
@@ -158,7 +156,7 @@ Widget _buildProductCard(BuildContext context, Product product, Pharmacy pharmac
                         color: Colors.cyan[100], 
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.local_pharmacy,
                         color: Color(0xFF4CA6C2), 
                         size: 30, 
@@ -281,7 +279,7 @@ Widget _buildPharmacyCard(BuildContext context, Pharmacy pharmacy) {
                       color: Colors.cyan[100],
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.local_pharmacy,
                       color: Color(0xFF4CA6C2),
                       size: 30,

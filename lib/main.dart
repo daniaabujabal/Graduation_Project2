@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Pages/Home_Page.dart';
-import 'Pages/Search_Page.dart';
-import 'Pages/Categories_Page.dart';
-import 'Pages/Navigation.dart';
 import 'Start_Pages/Sign_Up_Page.dart';
 //import 'dart:io';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -32,9 +28,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Color(0xFF55AFBC),
+        primaryColor: const Color(0xFF55AFBC),
       ),
-      home: SignUpScreen(), //  starting pages
+      home: const SignUpScreen(), //  starting pages
     );
   }
 }
