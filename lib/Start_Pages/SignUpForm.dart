@@ -29,9 +29,9 @@ class _SignUpFormState extends State<SignUpForm> {
     }
 
     final user = {
-      'name': _nameController.text,
-      'password': _passwordController.text,
-      'phone': _phoneController.text,
+      "username": _nameController.text,
+      "password": _passwordController.text,
+      "phonenumber": _phoneController.text,
     };
 
 //User user
