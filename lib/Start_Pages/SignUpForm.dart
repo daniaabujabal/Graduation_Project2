@@ -49,9 +49,21 @@ class _SignUpFormState extends State<SignUpForm> {
       );
 
       if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Status code' +
+                response.statusCode.toString() +
+                '\t headers' +
+                response.headers.toString() +
+                '\tbody ' +
+                response.body)));
         // API returns 200 status => successful registration
         return true;
       } else {
+        // print('------------------------------------------');
+        // print('Response Status Code: ${response.statusCode}');
+        // print('Response Body: ${response.body}');
+        // print('Response Headers: ${response.headers}');
+        // print('------------------------------------------');
         final responseData = json.decode(response.body);
         //API sends a message => error
         ScaffoldMessenger.of(context).showSnackBar(
@@ -171,8 +183,8 @@ class _SignUpFormState extends State<SignUpForm> {
                             builder: (context) => const MainNavigationPage()),
                       );
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Failed to register user.')));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text('Failed to register user.')));
                     }
                   }
                 },
