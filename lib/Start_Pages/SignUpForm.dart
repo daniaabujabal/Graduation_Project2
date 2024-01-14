@@ -43,7 +43,7 @@ class _SignUpFormState extends State<SignUpForm> {
       final response = await http.post(
         Uri.parse('http://192.168.100.134:44387/api/Users/register'),
         headers: <String, String>{
-          'Content-Type': 'application/json;',
+          'Content-Type': 'application/json; charset=UTF-8',
         }, //when sending info to API give the API what information type is (utf-8)
         body: json.encode(user),
       );
