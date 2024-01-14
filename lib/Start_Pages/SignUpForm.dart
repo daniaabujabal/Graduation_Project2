@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:graduation_project2/Pages/navigation.dart';
-import 'package:graduation_project2/Start_Pages/Sign_in.dart';
 
 class SignUpForm extends StatefulWidget {
+  const SignUpForm({super.key});
+
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -23,7 +23,7 @@ class _SignUpFormState extends State<SignUpForm> {
     int? phone = int.tryParse(_phoneController.text);
     if (phone == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid phone number format.')),
+        const SnackBar(content: Text('Invalid phone number format.')),
       );
       return false;
     }
@@ -81,7 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
             children: <Widget>[
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter Name',
                   hintStyle: TextStyle(color: Colors.white70),
                   enabledBorder: UnderlineInputBorder(
@@ -91,14 +91,15 @@ class _SignUpFormState extends State<SignUpForm> {
                   labelStyle: TextStyle(color: Colors.white70),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty)
+                  if (value == null || value.isEmpty) {
                     return 'Please enter your name';
+                  }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _phoneController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter Phone number',
                   hintStyle: TextStyle(color: Colors.white70),
                   enabledBorder: UnderlineInputBorder(
@@ -108,15 +109,16 @@ class _SignUpFormState extends State<SignUpForm> {
                   labelStyle: TextStyle(color: Colors.white70),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty)
+                  if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';
+                  }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter Password',
                   hintStyle: TextStyle(color: Colors.white70),
                   enabledBorder: UnderlineInputBorder(
@@ -126,17 +128,19 @@ class _SignUpFormState extends State<SignUpForm> {
                   labelStyle: TextStyle(color: Colors.white70),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty)
+                  if (value == null || value.isEmpty) {
                     return 'Please enter a password';
-                  if (_confirmPasswordController.text != value)
+                  }
+                  if (_confirmPasswordController.text != value) {
                     return 'Passwords do not match';
+                  }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Re-Enter Password',
                   hintStyle: TextStyle(color: Colors.white70),
                   enabledBorder: UnderlineInputBorder(
@@ -146,15 +150,17 @@ class _SignUpFormState extends State<SignUpForm> {
                   labelStyle: TextStyle(color: Colors.white70),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty)
+                  if (value == null || value.isEmpty) {
                     return 'Please re-enter your password';
-                  if (_passwordController.text != value)
+                  }
+                  if (_passwordController.text != value) {
                     return 'Passwords do not match';
+                  }
                   return null;
                 },
               ),
               ElevatedButton(
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
                     bool registrationSuccessful = await registerUser();
@@ -162,11 +168,11 @@ class _SignUpFormState extends State<SignUpForm> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MainNavigationPage()),
+                            builder: (context) => const MainNavigationPage()),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Failed to register user.')));
+                          const SnackBar(content: Text('Failed to register user.')));
                     }
                   }
                 },

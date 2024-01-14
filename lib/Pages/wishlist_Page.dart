@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:graduation_project2/widgets/image_constant.dart';
-import 'package:graduation_project2/services/models/Product.dart';
-import 'package:graduation_project2/services/models/User.dart';
 
 class WishlistPage extends StatefulWidget {
   final String searchQuery;
 
-  const WishlistPage({Key? key, required this.searchQuery}) : super(key: key);
+  const WishlistPage({super.key, required this.searchQuery});
 
   @override
   _WishlistPageState createState() => _WishlistPageState();
@@ -42,13 +38,13 @@ Widget build(BuildContext context) {
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0, top: 10.0),
               child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+          const Padding(
+            padding: EdgeInsets.only(left: 10.0),
             child: Center(
               child: Text(
                 "Wishlist",
@@ -66,12 +62,12 @@ Widget build(BuildContext context) {
               padding: const EdgeInsets.only(top: 20),
               decoration: BoxDecoration(
                 color: Colors.white54.withOpacity(0.5),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(70.0),
                   topRight: Radius.circular(70.0),
                 ),
               ),
-              child: Center(
+              child: const Center(
                 child: Text("Wishlist Items "),
               ),
             ),

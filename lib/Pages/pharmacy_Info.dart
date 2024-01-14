@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/Pages/product_Info.dart';
 import 'package:graduation_project2/services/models/Product.dart';
-import 'package:graduation_project2/widgets/image_constant.dart';
 import 'package:graduation_project2/services/models/Pharmacy.dart';
 
 class PharmacyInfoPage extends StatelessWidget {
   final Pharmacy pharmacy;
   
 
-  PharmacyInfoPage({Key? key, required this.pharmacy}) : super(key: key);
+  const PharmacyInfoPage({super.key, required this.pharmacy});
   
 
   @override
@@ -35,7 +33,7 @@ class PharmacyInfoPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 10.0),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -45,7 +43,7 @@ class PharmacyInfoPage extends StatelessWidget {
               child: Center(
                 child: Text(
                   pharmacy.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -78,7 +76,7 @@ class PharmacyInfoPage extends StatelessWidget {
     children: [
       Text(
         'Products in ${pharmacy.name}',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.bold,
           color: Colors.black54,
@@ -92,12 +90,12 @@ class PharmacyInfoPage extends StatelessWidget {
           );
         },
         child: Container(
-          padding: EdgeInsets.all(8), 
+          padding: const EdgeInsets.all(8), 
           decoration: BoxDecoration(
-            color: Color(0xFF55AFBC), 
+            color: const Color(0xFF55AFBC), 
             borderRadius: BorderRadius.circular(10), 
           ),
-          child: Icon(
+          child: const Icon(
             Icons.search,
             size: 24, 
             color: Color(0xFF95E4D4), 
@@ -110,7 +108,7 @@ class PharmacyInfoPage extends StatelessWidget {
                     
                     const SizedBox(height: 10),
 
-                   Container(
+                   SizedBox(
                       height: 140, 
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -148,7 +146,7 @@ class PharmacyInfoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Pharmacy Info",
               style: TextStyle(
                 fontSize: 22,
@@ -159,23 +157,23 @@ class PharmacyInfoPage extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                Icon(Icons.location_on, color: Color(0xFF55AFBC)),
+                const Icon(Icons.location_on, color: Color(0xFF55AFBC)),
                 const SizedBox(width: 8),
                 Text(pharmacy.address),
               ],
             ),
             const SizedBox(height: 10),
-            Row(
+            const Row(
               children: [
                 Icon(Icons.access_time, color: Color(0xFF55AFBC)),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Text('8:00 AM - 11:00 PM'), 
               ],
             ),
             const SizedBox(height: 10),
             Row(
               children: [
-                Icon(Icons.phone, color: Color(0xFF55AFBC)),
+                const Icon(Icons.phone, color: Color(0xFF55AFBC)),
                 const SizedBox(width: 8),
                 Text(pharmacy.phoneNumber),
               ],
@@ -196,12 +194,12 @@ class PharmacyInfoPage extends StatelessWidget {
   return Row(
     children: List<Widget>.generate(maxStars, (index) {
       if (index < fullStars) {
-        return Icon(Icons.star, color: Color(0xFF55AFBC));
+        return const Icon(Icons.star, color: Color(0xFF55AFBC));
       } else if (hasHalfStar && index == fullStars) {
         hasHalfStar = false; //one half star
-        return Icon(Icons.star_half, color: Color(0xFF55AFBC));
+        return const Icon(Icons.star_half, color: Color(0xFF55AFBC));
       } else {
-        return Icon(Icons.star_border, color: Color(0xFF55AFBC));
+        return const Icon(Icons.star_border, color: Color(0xFF55AFBC));
       }
     }),
   );
@@ -230,7 +228,7 @@ Widget _buildProductCard(BuildContext context, Product product, Pharmacy pharmac
           children: [
             Text(
               product.tradeName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF4CA6C2),
@@ -239,7 +237,7 @@ Widget _buildProductCard(BuildContext context, Product product, Pharmacy pharmac
             const SizedBox(height: 10),
             Text(
               'Price: ${product.publicPrice} JOD',
-              style: TextStyle(color: Color(0xFF71CDD7)),
+              style: const TextStyle(color: Color(0xFF71CDD7)),
             ),
             const SizedBox(height: 10),
             
@@ -257,10 +255,11 @@ class PharmacyProductSearchDelegate extends SearchDelegate<Product?> {
   @override
   String get searchFieldLabel => 'Search a product in ${pharmacy.name}';
 
+  @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -271,7 +270,7 @@ class PharmacyProductSearchDelegate extends SearchDelegate<Product?> {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -313,7 +312,7 @@ class PharmacyProductSearchDelegate extends SearchDelegate<Product?> {
           children: [
             Text(
               product.tradeName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF4CA6C2),
@@ -322,7 +321,7 @@ class PharmacyProductSearchDelegate extends SearchDelegate<Product?> {
             const SizedBox(height: 10),
             Text(
               'Price: ${product.publicPrice} JOD',
-              style: TextStyle(color: Color(0xFF71CDD7)),
+              style: const TextStyle(color: Color(0xFF71CDD7)),
             ),
             const SizedBox(height: 10),
           
@@ -342,6 +341,6 @@ class PharmacyProductSearchDelegate extends SearchDelegate<Product?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Column(); 
+    return const Column(); 
   }
 }

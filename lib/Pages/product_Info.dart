@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project2/Pages/pharmacy_Info.dart';
-import 'package:graduation_project2/widgets/image_constant.dart';
 import 'package:graduation_project2/services/models/Product.dart';
 import 'package:graduation_project2/services/models/Pharmacy.dart';
 
@@ -9,7 +7,7 @@ class ProductInfoPage extends StatelessWidget {
   final Product product;
   final List<Pharmacy> pharmacies; 
 
-  ProductInfoPage({Key? key, required this.product, required this.pharmacies}) : super(key: key);
+  const ProductInfoPage({super.key, required this.product, required this.pharmacies});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class ProductInfoPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 10.0),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
@@ -44,7 +42,7 @@ class ProductInfoPage extends StatelessWidget {
               child: Center(
                 child: Text(
                   product.tradeName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -88,7 +86,7 @@ class ProductInfoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Product Info",
               style: TextStyle(
                 fontSize: 22,
@@ -96,20 +94,20 @@ class ProductInfoPage extends StatelessWidget {
                 color: Color(0xFF55AFBC),
               ),
             ),
-             Text(product.description,style: TextStyle(
+             Text(product.description,style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.black54,
               ),),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Dosage: ${product.amount} mg',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.black54,
               ),), 
-              SizedBox(height: 8),
-              Text('Price: ${product.publicPrice} JOD', style: TextStyle(
+              const SizedBox(height: 8),
+              Text('Price: ${product.publicPrice} JOD', style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.black54,
@@ -132,7 +130,7 @@ class ProductInfoPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Available in",
               style: TextStyle(
                 fontSize: 22,
@@ -162,18 +160,18 @@ class ProductInfoPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            Icon(Icons.local_pharmacy, color:Color(0xFF55AFBC)),
+            const Icon(Icons.local_pharmacy, color:Color(0xFF55AFBC)),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(pharmacy.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(pharmacy.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                   Text(pharmacy.address),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF55AFBC)),
+            const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF55AFBC)),
           ],
         ),
       ),
