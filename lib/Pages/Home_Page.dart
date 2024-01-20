@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:graduation_project2/widgets/image_constant.dart';
 import 'Categories_Page.dart';
 import 'Search_Page.dart';
@@ -10,7 +12,7 @@ import 'package:graduation_project2/services/models/Pharmacy.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'package:graduation_project2/Pages/search.dart';
@@ -19,6 +21,7 @@ import 'package:graduation_project2/Pages/pharmacy_Info.dart';
 
 import 'package:graduation_project2/services/models/User.dart';
 import 'package:graduation_project2/services/models/User_Product.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
@@ -28,20 +31,43 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-//wishlist_Api apiService = wishlist_Api();
+//String apiKey = "AIzaSyDRJFyNMX431jprzZf_FcqJtH0eBaWwIuQ";
+//String raduis = "3000";
+//double longitude = ""
 
 
 class _HomePageState extends State<HomePage> {
   final double cardBorderRadius = 25.0;
   TextEditingController searchController = TextEditingController();
 List<dynamic> allPharmacies = [];
+  List<Pharmacy> nearbyPharmacies = [];
   List<dynamic> highlyRatedPharmacies = [];
+  Position? currentPosition;
+  double radius = 5000; // Radius in meters to search for nearby pharmacies.
+  bool locationPermissionDenied = false;
+  User? currentUser; // Your logic to assign this
+  
 
   @override
   void initState() {
     super.initState();
+   loadPharmacies().then((_) {
+    _determinePosition();
+  });
+   _fetchUserLocationFromApi();
+
     loadJson();
   }
+  Future<void> loadPharmacies() async {
+  String jsonString = await rootBundle.loadString('assets/sample_data.json');
+  final jsonResponse = json.decode(jsonString);
+  setState(() {
+    allPharmacies = (jsonResponse['pharmacies'] as List)
+        .map((pharmacyJson) => Pharmacy.fromJson(pharmacyJson))
+        .toList();
+  });
+}
+
 
   Future<void> loadJson() async {
   String jsonString = await rootBundle.loadString('assets/sample_data.json');
@@ -52,6 +78,118 @@ List<dynamic> allPharmacies = [];
   });
   print(highlyRatedPharmacies); 
 }
+
+ Future<void> _determinePosition() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() => locationPermissionDenied = true);
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      setState(() => locationPermissionDenied = true);
+      return;
+    }
+
+    // When permissions are granted continue to get the position.
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      currentPosition = position;
+      locationPermissionDenied = false;
+    });
+
+    _getNearbyPharmacies();
+  }
+
+void _getNearbyPharmacies() {
+  if (locationPermissionDenied || currentPosition == null) {
+    setState(() {
+      nearbyPharmacies = [];
+    });
+    return;
+  }
+
+  setState(() {
+    nearbyPharmacies = allPharmacies.where((pharmacyJson) {
+      final Map<String, dynamic> pharmacyMap = pharmacyJson as Map<String, dynamic>;
+
+      final Pharmacy pharmacy = Pharmacy.fromJson(pharmacyMap);
+
+      final distance = Geolocator.distanceBetween(
+        currentPosition!.latitude,
+        currentPosition!.longitude,
+        pharmacy.latitude,
+        pharmacy.longitude,
+      );
+
+      return distance <= radius;
+    }).cast<Pharmacy>().toList();
+  });
+}
+
+    Future<void> _fetchUserLocationFromApi() async {
+    try {
+    String userData = await rootBundle.loadString('assets/users.json');
+    final userJsonResponse = json.decode(userData);
+    List<dynamic> users = userJsonResponse['users'];
+    currentUser = User.fromJson(users.first);
+
+    if (currentUser != null) {
+      setState(() {
+        currentPosition = Position(
+          latitude: currentUser!.latitude,
+          longitude: currentUser!.longitude,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+          altitudeAccuracy: 0.0, 
+          headingAccuracy: 0.0,
+        );
+      });
+    }
+  } catch (e) {
+    print("Error loading user data: $e");
+  }
+}
+
+  Widget _buildNearbyPharmaciesList() {
+    if (locationPermissionDenied) {
+      return Center(child: Text('Location permission is denied.'));
+    }
+    if (nearbyPharmacies.isEmpty) {
+      return Center(child: Text('No nearby pharmacies found.'));
+    }
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: nearbyPharmacies.length,
+      itemBuilder: (context, index) {
+        return _buildPharmacyCard(nearbyPharmacies[index]);
+      },
+    );
+  }
+
+  Widget _buildPharmacyCard(Pharmacy pharmacy) {
+ return Card(
+      child: Column(
+        children: [
+          
+          Text(pharmacy.name),
+          Text('${pharmacy.address} - ${pharmacy.phoneNumber}'),
+          _buildRatingRow(pharmacy.rating),
+        ],
+      ),
+    );  }
 
 
   @override
@@ -273,92 +411,20 @@ List<dynamic> allPharmacies = [];
                         ],
                       ),
                     ),
-
-                    Container(
-                      height: 120,
-
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: ()
-                            {
-
-
-
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.93,
-                              margin: EdgeInsets.only(left: 16, right: index == 9 ? 16 : 0),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(cardBorderRadius),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10), // Space around the icon
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: Colors.cyan[100], // Icon background color
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Icon(
-                                        Icons.local_pharmacy,
-                                        color: Color(0xFF4CA6C2), // Icon color
-                                        size: 30, // Icon size
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Pharmacy One',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: Color(0xFF71CDD7), // Text color
-                                            ),
-                                          ),
-                                          Text(
-                                            '8:00 am - 11:00 pm',
-                                            style: TextStyle(
-                                              color: Color(0xFF71CDD7),
-                                            ),
-                                          ),
-                                          Text(
-                                            'pharmacy info pharmacy info',
-                                            style: TextStyle(
-                                              color: Color(0xFF71CDD7),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                   
+                     Container(
+            height: 120,
+            child: nearbyPharmacies.isEmpty
+              ? Center(child: Text('No nearby pharmacies found.'))
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: nearbyPharmacies.length,
+                  itemBuilder: (context, index) {
+                    return _buildPharmacyCard(nearbyPharmacies[index]);
+                  },
+                ),
+          ),
+                                
                     const SizedBox(height: 10),
 
                     Padding(
@@ -396,7 +462,7 @@ List<dynamic> allPharmacies = [];
                              Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy), 
+            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy,), 
           ),);
                             
                             },

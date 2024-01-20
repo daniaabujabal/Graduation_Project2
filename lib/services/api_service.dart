@@ -1,57 +1,75 @@
-
   import 'dart:convert';
+  import 'package:graduation_project2/services/models/FeedBack.dart';
+import 'package:http/http.dart' as http;
+
   import 'package:flutter/services.dart' show rootBundle;
   import 'models/Product.dart';
   import 'models/Pharmacy.dart';
 
-  class ApiService {
-    Future<List<dynamic>> searchProductsAndPharmacies(String query,{String? sortBy}) async {
+ class ApiService {
+
+  Future<List<dynamic>> searchProductsAndPharmacies(String query, {String? sortBy}) async {
     final String jsonString = await rootBundle.loadString('assets/sample_data.json');
     final jsonResponse = json.decode(jsonString);
     List<dynamic> searchResults = [];
 
-    // Search for pharmacies
+    // Search for pharmacies and products
     var pharmacies = jsonResponse['pharmacies'] as List;
-    var matchedPharmacies = pharmacies.where((pharm) {
-      return pharm['name'].toString().toLowerCase().contains(query.toLowerCase());
-    }).map((e) => Pharmacy.fromJson(e)).toList();
+    List<Pharmacy> matchedPharmacies = [];
+    List<dynamic> matchedProducts = [];
 
-    // Add matched pharmacies to the search results
-    searchResults.addAll(matchedPharmacies.map((pharmacy) {
-      return {
-        'type': 'pharmacy',
-        'data': pharmacy
-      };
-    }));
-
-    // Search for products in all pharmacies
     for (var pharmacyJson in pharmacies) {
       var pharmacy = Pharmacy.fromJson(pharmacyJson);
-      var matchedProducts = pharmacy.products.where((product) {
+
+      // Check if the pharmacy name matches the query
+      if (pharmacy.name.toLowerCase().contains(query.toLowerCase())) {
+        matchedPharmacies.add(pharmacy);
+      }
+
+      // Check if any product in the pharmacy matches the query
+      var pharmacyProducts = pharmacy.products.where((product) {
         return product.tradeName.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
-      // Add matched products and their respective pharmacies to the search results
-      searchResults.addAll(matchedProducts.map((product) {
-        return {
-          'type': 'product',
-          'data': product,
-          'pharmacy': pharmacy
-        };
-      }));
-    }  if (sortBy != null) {
-      if (sortBy == 'price') {
-        // Debugging
-        print('Before Sorting by price: $searchResults');
-        searchResults.sort((a, b) => a['product'].publicPrice.compareTo(b['product'].publicPrice));
-        print('After Sorting by price: $searchResults');
-      } else if (sortBy == 'rating') {
-        print('Before Sorting by rating: $searchResults');
-        searchResults.sort((a, b) => b['product'].rating.compareTo(a['product'].rating));
-        print('After Sorting by rating: $searchResults');
+      if (pharmacyProducts.isNotEmpty) {
+        matchedProducts.addAll(pharmacyProducts.map((product) {
+          return {
+            'type': 'product',
+            'data': product,
+            'pharmacy': pharmacy
+          };
+        }));
       }
     }
 
-  return searchResults;
+    if (sortBy == 'rating') {
+      matchedPharmacies.sort((a, b) => b.rating.compareTo(a.rating));
+    }
+
+    
+    if (sortBy == 'price') {
+      matchedProducts.sort((a, b) => a['data'].publicPrice.compareTo(b['data'].publicPrice));
+    }
+
+    searchResults.addAll(matchedPharmacies.map((pharmacy) => {
+      'type': 'pharmacy',
+      'data': pharmacy
+    }));
+    searchResults.addAll(matchedProducts);
+
+    return searchResults;
+  }
+
+  Future<List<FeedBack>> fetchFeedbackForPharmacy(int pharmacyId) async {
+    var url = Uri.parse('https://apo.com/feedback');
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> feedbackJson = json.decode(response.body);
+      return feedbackJson.map((json) => FeedBack.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load feedback');
     }
   }
+}
+

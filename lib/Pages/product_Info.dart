@@ -154,7 +154,7 @@ class ProductInfoPage extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy),
+            builder: (context) => PharmacyInfoPage(pharmacy: pharmacy,),
           ),
         );
       },

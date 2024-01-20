@@ -5,10 +5,30 @@
       "name": "pharmacy 1",
       "phoneNumber": "962-000-000-000",
       "address": "123 AbuRaihanah St",
-      "latitude": 34.0219,
-      "longitude": -118.4814,
+      "workingHours": "8:00 AM - 6:00 PM",
+      "latitude": 36.778259,
+      "longitude": -119.417931,
       "description": "This is a description for Pharmacy 1.",
       "rating": 4.5,
+      "feedbacks": [
+        {
+          "status": true,
+          "text": "Excellent service and friendly staff.",
+          "title": "Great Experience",
+          "rating": 5.0,
+          "userId":1,
+          "pharmacyId": 1
+        },
+        {
+          "status": true,
+          "text": "Quick prescription service.",
+          "title": "Efficient and Professional",
+          "rating": 4.5,
+          "userId":1,
+          "pharmacyId": 1
+        }
+      ],
+
       "productIds": [1, 2],
       "products": [
         {
@@ -102,8 +122,9 @@
       "name": "test",
       "phoneNumber": "962-000-000-000",
       "address": "456 AabuRaihanah St, Jordan",
-      "latitude": 31.9539,
-      "longitude": 35.9106,
+      "workingHours": "9:00 AM - 5:00 PM",
+      "latitude": 31.9404535748,
+      "longitude": 35.9114315566,
       "description": "This is a description for Pharmacy 2.",
       "rating": 4,
       "productIds": [3],
@@ -131,7 +152,7 @@
         },
         {
           "id": 1,
-          "tradeName": "panadol ",
+          "tradeName": "test ",
           "scientificName": "paracetamol",
           "number": "12345",
           "provider": "Provider A",

@@ -23,18 +23,30 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    // Assuming 'json['feedBacks']' is a List of Map<String, dynamic> that represents feedbacks.
+    List<FeedBack> feedbacksList = (json['feedBacks'] as List<dynamic>?)
+            ?.map((e) => FeedBack.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [];
+
+    List<UserProduct> userProductsList = json['userProducts'] != null
+        ? (json['userProducts'] as List)
+            .map((i) => UserProduct.fromJson(i))
+            .toList()
+        : []; // Empty list if null
+
     return User(
-      id: json['id'],
-      userName: json['userName'],
-      password: json['password'],
-      phoneNumber: json['phoneNumber'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-      feedBacks:
-          (json['feedBacks'] as List).map((i) => FeedBack.fromJson(i)).toList(),
-      userProducts: (json['userProducts'] as List)
-          .map((i) => UserProduct.fromJson(i))
-          .toList(),
+      id: json['id'] ?? 0, // Default to 0 if id is null
+      userName: json['userName'] ??
+          '', // Default to an empty string if userName is null
+      password: json['password'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
+      latitude: (json['latitude'] as num?)?.toDouble() ??
+          0.0, // Default to 0.0 if latitude is null
+      longitude: (json['longitude'] as num?)?.toDouble() ??
+          0.0, // Default to 0.0 if longitude is null
+      feedBacks: feedbacksList,
+      userProducts: userProductsList,
     );
   }
 
